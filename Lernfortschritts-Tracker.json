@@ -1,0 +1,548 @@
+{
+  "name": "Lernfortschritts-Tracker",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Lernfortschritts-Tracker",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Wie lange hast du gelernt? (in Stunden):",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Welches Thema hast du gelernt?:",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Datum des lern Tages:",
+              "fieldType": "date",
+              "defaultValue": "={{ $now.toFormat('yyyy-MM-dd') }}",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -224,
+        0
+      ],
+      "id": "dc549ec1-3fd8-4c42-a3a9-33222daf3c26",
+      "name": "On form submission",
+      "webhookId": "8550db9a-27b2-4257-9762-3fe85a4588e1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE",
+          "mode": "list",
+          "cachedResultName": "Lernfortschritts-Tabelle",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 285224042,
+          "mode": "list",
+          "cachedResultName": "Stunden pro Monat",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE/edit#gid=285224042"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "MonthKey",
+              "lookupValue": "={{ $json.monthKey }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        176
+      ],
+      "id": "88d86033-7b12-499c-aacb-3b0ce5aa9f1f",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hCoGj5lQJuEhUDaC",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE",
+          "mode": "list",
+          "cachedResultName": "Lernfortschritts-Tabelle",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Stunden pro Lern-Einheit",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Datum:": "={{ $json.date }}",
+            "Stunden:": "={{ $json.hours }}",
+            "Thema:": "={{ $json.topic }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Datum:",
+              "displayName": "Datum:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thema:",
+              "displayName": "Thema:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Stunden:",
+              "displayName": "Stunden:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        -112
+      ],
+      "id": "2edf13dc-ce62-447f-8634-101149bfa74c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hCoGj5lQJuEhUDaC",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2c88ee58-6933-4a65-b038-c60f849bbe55",
+              "name": "hours",
+              "value": "={{ $json['Wie lange hast du gelernt? (in Stunden):'] }}",
+              "type": "number"
+            },
+            {
+              "id": "c6541187-e44b-4f83-9e07-2a5982a19105",
+              "name": "topic",
+              "value": "={{ $json['Welches Thema hast du gelernt?:'] }}",
+              "type": "string"
+            },
+            {
+              "id": "1b937d42-f24d-403a-8a66-f59ea6d8b27d",
+              "name": "date",
+              "value": "={{ $json['Datum des lern Tages:'] }}",
+              "type": "string"
+            },
+            {
+              "id": "3cb20824-242c-4218-a55d-f2be7e3c4230",
+              "name": "month",
+              "value": "={{ new Date($json['Datum des lern Tages:']).getMonth()+1 }}",
+              "type": "string"
+            },
+            {
+              "id": "f8c7865e-5f5f-46c0-aada-ea8d93cafb6e",
+              "name": "year",
+              "value": "={{ new Date($json['Datum des lern Tages:']).getFullYear() }}",
+              "type": "string"
+            },
+            {
+              "id": "5d39563a-30f6-42ac-9930-88aea5d9a2b4",
+              "name": "monthKey",
+              "value": "={{ $json['Datum des lern Tages:'].slice(0, 7) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a4233bda-83f4-4aa4-afd7-f55bdb196bef",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b2bdc5ed-cee3-437c-9e3d-d9fead29ec8f",
+              "leftValue": "={{ $json.MonthKey }}",
+              "rightValue": "",
+              "operator": {
+                "type": "dateTime",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "13a477ff-5936-4749-b73d-23363e81615c",
+              "leftValue": "={{ $json.MonthKey }}",
+              "rightValue": "={{ $('Edit Fields').item.json.monthKey }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        16
+      ],
+      "id": "ae44c201-02fa-49e8-a124-5735761856ed",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE",
+          "mode": "list",
+          "cachedResultName": "Lernfortschritts-Tabelle",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 285224042,
+          "mode": "list",
+          "cachedResultName": "Stunden pro Monat",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE/edit#gid=285224042"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MonthKey": "={{ $('Edit Fields').item.json.monthKey }}",
+            "Stunden": "={{ $('Edit Fields').item.json.hours }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "MonthKey",
+              "displayName": "MonthKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Stunden",
+              "displayName": "Stunden",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        176
+      ],
+      "id": "05dfcc21-5ea4-447e-a663-2441b3fffe5b",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hCoGj5lQJuEhUDaC",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE",
+          "mode": "list",
+          "cachedResultName": "Lernfortschritts-Tabelle",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 285224042,
+          "mode": "list",
+          "cachedResultName": "Stunden pro Monat",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DyPDE-z6zkHLU8TIeXMccEC6jvolw6xUf75XSDaOKaE/edit#gid=285224042"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MonthKey": "={{ $('Edit Fields').item.json.monthKey }}",
+            "Stunden": "={{ Number($json.Stunden) + Number($('Edit Fields').item.json.hours) }}"
+          },
+          "matchingColumns": [
+            "MonthKey"
+          ],
+          "schema": [
+            {
+              "id": "MonthKey",
+              "displayName": "MonthKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Stunden",
+              "displayName": "Stunden",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        -144
+      ],
+      "id": "e40bd93b-eff5-485b-bc29-c0ae1a3c1b9e",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hCoGj5lQJuEhUDaC",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "=Du hast heute: {{ $('Edit Fields').item.json.hours }} Stunden gelernt,\nzum Thema: {{ $('Edit Fields').item.json.topic }}.\nDiesen Monat hast du insgesamt: {{ $json.Stunden }} Stunden gelernt!",
+              "author": "={{ $('On form submission').item.json.formMode }}",
+              "color": "#1F8400"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        16
+      ],
+      "id": "b93612e2-27b9-4bd2-b0b3-52c8d928c3aa",
+      "name": "Discord",
+      "webhookId": "540ca794-01cc-47fb-91ff-2dc110cddaad",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "J3hjnql1MAjFLRqE",
+          "name": "Discord Webhook account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        928,
+        16
+      ],
+      "id": "5059a7db-ea2f-4050-a0d9-12826d5bbd22",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ba6e80dc-f422-4935-afa1-a5cbd29e5d48",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "67b998387f1e20a19a9471f0d7961ac98effe261611112e207b6228a6909f88b"
+  },
+  "nodeGroups": [],
+  "id": "g3EKBJLubN8KNyEO",
+  "tags": []
+}
