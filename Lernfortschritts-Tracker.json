@@ -537,10 +537,8 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "ba6e80dc-f422-4935-afa1-a5cbd29e5d48",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "67b998387f1e20a19a9471f0d7961ac98effe261611112e207b6228a6909f88b"
+    "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
   "id": "g3EKBJLubN8KNyEO",
